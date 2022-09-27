@@ -16,7 +16,14 @@ const DATABASE_URL = process.env.NODE_ENV ==='test'
   ? 'sqlite::memory'
   : 'sqlite:memory';
 
-const sequelizeDatabase = new Sequelize(DATABASE_URL);
+let options = process.env.NODE_ENV === 'production' ? {
+  dialectOptions: {
+    ssl: true,
+    rejectuUnauthorized: false,
+  },
+} : {};
+
+const sequelizeDatabase = new Sequelize(DATABASE_URL, options);
 
 app.use(express.urlencoded({extended: true}));
 
