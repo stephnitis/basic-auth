@@ -17,3 +17,5 @@ Using an HTTP REST client, or a web form:
     - Send a basic authentication header with a properly encoded username and password combination
     - On a successful account login, return a 200 status with the user object in the body
     - On any error, trigger your error handler with the message “Invalid Login”
+
+![UML](./img/basic-auth-uml.png)
