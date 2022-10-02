@@ -1,17 +1,10 @@
 'use strict';
 
 const supertest = require('supertest');
-const {sequelizeDatabase, app} = require('../src/auth/server');
+const { app } = require('../src/auth/server');
 
 const request = supertest(app);
 
-beforeAll(async () => {
-  await sequelizeDatabase.sync();
-});
-
-afterAll(async () => {
-  await sequelizeDatabase.drop();
-});
 
 describe('API Server', () => {
 
@@ -36,19 +29,5 @@ describe('API Server', () => {
     expect(response.text).toEqual('hello');
   });
 
-
-});
-
-describe('User CRUD', () => {
-
-  it('Creates a User', async() => {
-    let response = await request.post('/signup').send({
-      username: 'test',
-      password: 'pword',
-    });
-
-    expect(response.status).toEqual(200);
-    expect(response.body.username).toEqual('test');
-  });
 
 });

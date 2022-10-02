@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 const base64 = require('base-64');
-const UsersModel = require('../models/users-model');
+const {UsersModel} = require('../models');
 
 async function basicAuth(req, res, next){
   let {authorization} = req.headers;
@@ -14,22 +14,21 @@ async function basicAuth(req, res, next){
 
   } else {
 
-    let authString = authorization.split('')[1];
-    console.log('authStr:', authString);
+    let authString = authorization.split(' ')[1];
+    // console.log('authStr:', authString);
 
     let decodedAuthString = base64.decode(authString);
-    console.log('decodedAuthString', decodedAuthString);
+    // console.log('decodedAuthString', decodedAuthString);
 
     let [username, password] = decodedAuthString.split(':');
-    console.log('username:', username);
-    console.log('password:', password);
+    // console.log('username:', username);
 
     let user = await UsersModel.findOne({where: {username}});
-    console.log('user:', user);
+    // console.log('user:', user);
 
     if(user){
       let validUser = await bcrypt.compare(password, user.password);
-      console.log('validUser', validUser);
+      // console.log('validUser', validUser);
 
       if (validUser){
         req.user = user;
@@ -38,8 +37,6 @@ async function basicAuth(req, res, next){
         next('Not Authorized');
       }
     }
-
-
   }
 }
 
